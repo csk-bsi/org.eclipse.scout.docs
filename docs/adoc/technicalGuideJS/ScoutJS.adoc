@@ -830,3 +830,105 @@ Example:
 Output:
 
   <scout-version data-value="16.1.0.002"></scout-version>
+
+== Build Stack
+JavaScript and CSS assets of a typical Scout application are built by  https://webpack.js.org/[Webpack] using https://www.npmjs.com/[npm] and https://nodejs.org/[Node.js]. In order to make the building as easy as possible for you, there is a https://www.npmjs.com/package/@eclipse-scout/cli[CLI] module available. That module contains a default webpack and karma configuration and several build scripts you can use. The goal is to reduce the time you need to setup your build to a minimum. If you have created your Scout project using a Scout archetype, it should all be already setup for you. Nevertheless, you will get to a point where it is important to know how the building works in detail and how the several build tools are wired together. If you are there, this chapter should help you out.
+
+=== Dependency Management
+In every modern application you will have dependencies to other modules, either modules you created to separate your code, or third party modules like Scout. Such dependencies to other JavaScript modules are managed by the Node Package Manager (https://www.npmjs.com/[npm]). So every module containing JavaScript or Less code needs to be a Node module with a `package.json` file that defines its dependencies.
+
+This setup gives you the possibility to easier integrate and update 3rd party JavaScript frameworks available in the huge https://www.npmjs.com/[npm registry].
+
+Scout itself is also published to that registry and will therefore be downloaded automatically once you execute `npm install`, as long as your `package.json` contains a Scout dependency. You will recognize a Scout module based on its name: all official Scout modules are published using the scope `@eclipse-scout`. The most important one is https://www.npmjs.com/package/@eclipse-scout/core[@eclipse-scout/core] which contains the core runtime functionality. Other modules are https://www.npmjs.com/package/@eclipse-scout/cli[@eclipse-scout/cli] for the building support, https://www.npmjs.com/package/@eclipse-scout/eslint-config[@eclipse-scout/eslint-config] for our ESLint rules, or https://www.npmjs.com/package/@eclipse-scout/karma-jasmine-scout[@eclipse-scout/karma-jasmine-scout] for enhanced testing support.
+
+==== ES6 Modules
+In addition to Node module dependencies, a Scout application uses ES6 imports to define dependencies between the JavaScript files. So if you want to use a class or utility from `@eclipse-scout/core`, you'll need to import that class or utility in your own JavaScript file.
+
+[source,javascript]
+.Importing ES6 modules
+----
+import PersonFormModel from './PersonFormModel';
+import {Form, models} from '@eclipse-scout/core';
+
+export default class PersonForm extends Form {
+
+  _jsonModel() {
+    return models.get(PersonFormModel);
+  }
+}
+----
+
+In the code above there are two imports defined: the first one imports the file `PersonFormModel` into the variable PersonFormModel. The second one imports the class `Form` and the utility `models` from the scout core module. Notice that the first import directly addresses a specific file while the second import addresses the node module itself. This is possible because Scout provides an `index` file specifying all available exports. That file is linked in the `package.json`. If your application contains more than one Node modules as well, you can do the same.
+
+=== Webpack Configuration
+Scout provides a default Webpack configuration containing all the necessary settings for Webpack and the plugins needed for a typical Scout application setup. To make your application use the Scout defaults, you need to create a file called `webpack.config.js` in your Node module and reexport the Scout configuration.
+
+[source,javascript]
+.Using Scout's default Webpack config
+----
+const baseConfig = require('@eclipse-scout/cli/scripts/webpack-defaults');
+module.exports = (env, args) => {
+  return baseConfig(env, args);
+};
+----
+
+If you don't like the defaults you can easily adjust them by customizing the object returned by the `baseConfig(env, args)` call.
+
+==== Bundling
+The main purpose of Webpack is to bundle the many small source files into one or a few larger JavaScript or Less-Files which are included in the html-files as <script> resp. <style> tags and therefore loaded by the browser. There are a lot of different strategies and opinions on how to bundle correctly. If you have a strong opinion about it you can use your own bundling strategy. If not you should be fine with the Scout defaults which are as follows: There are 4 JavaScript bundles:
+
+- `eclipse-scout.js`: contains all official Scout code (from modules with scope @eclipse-scout).
+- `jquery.js`: contains the jQuery code.
+- `vendors.js`: contains all other third party code (libraries in the node_modules folder). This file is only created if you have other third party code. This is not the case for a newly created Scout app so your index.html may not include it yet.
+- `your-app.js`: contains all the code from your app.
+
+There are some reasons why we chose this strategy:
+
+- Optimal caching: the bundles can be reused by different html files, e.g. `eclipse-scout.js` and `jquery.js` can be used by `index.html`, `login.html` and `logout.html`. The browser only has to load the files once and can reuse them for the other html pages.
+- Keep it simple: we think that this approach is simple to understand.
+- Security: the login page should only load the code it needs to display the login page and should not reveal the application code. That is why `login.html` includes its own entry point (`login.js`) and does not use `your-app.js`.
+
+To let Webpack know about your entry files you need to specify them in your `webpack.config.js`.
+
+[source,javascript]
+.Using Scout's default Webpack config
+----
+const baseConfig = require('@eclipse-scout/cli/scripts/webpack-defaults');
+
+module.exports = (env, args) => {
+args.resDirArray = ['src/main/resources/WebContent', 'node_modules/@eclipse-scout/core/res'];
+const config = baseConfig(env, args);
+
+  config.entry = {
+    'helloworld': './src/main/js/index.js',
+    'helloworld-theme': require.resolve('@helloworld/ui/src/main/js/theme.less'),
+    'helloworld-theme-dark': require.resolve('@helloworld/ui/src/main/js/theme-dark.less')
+  };
+
+  return config;
+};
+----
+
+In this example the application is called `helloworld` and there is a bundle created with the same name. In order to create the bundle Webpack uses the entry file, which is index.js in this case, follows all the ES 6 imports and includes these files. It then extracts chunks into separate files based on predefined rules. Scout already defines some rules in order to create 3 chunks mentioned above (eclipse-scout, jquery, vendors). So you don't have to care about these chunks unless you want to further split them (maybe extract your own framework code into a separate bundle).
+
+Also notice that the same applies to CSS files. The above example defines 2 CSS bundles in addition to the JavaScript bundle: `helloworld-theme.css` and `helloworld-theme-dark.css`. There are no predefined chunks for CSS files, we just put all the CSS code in one big file.
+
+==== EcmaScript Transpiler
+In order to use the latest EcmaScript features like the <<ES6 Modules>> but still support older browsers, Scout uses https://babeljs.io/[Babel] to transpile ES6+ code into ES5. The transpiler is enabled by default if you use the Webpack configuration provided by Scout, so you don't have to configure it by yourself.
+
+==== CSS Preprocessor
+The CSS preprocessor used by Scout is http://lesscss.org/[Less], so the default webpack configuration already supports it by using the `less-loader` plugin. In order to profit from Scout`s less variables (see <<Styling>>) we recommend to use Less as well. Since it is already configured, you won't have to do anything but to write your CSS rules.
+
+=== Command Line Interface (CLI)
+
+=== ESLint
+
+
+
+=== Integration with Maven
+
+
+
+
+
+
