@@ -24,7 +24,7 @@ export default class TabBoxForm extends Form {
 
   _init(model) {
     super._init(model);
-    var tabBox = this.widget('TabBox');
+    let tabBox = this.widget('TabBox');
 
     this.widget('Properties.TabBox').setTabBox(tabBox);
     this.widget('WidgetActionsBox').setField(tabBox);
@@ -36,12 +36,12 @@ export default class TabBoxForm extends Form {
     this.deleteTabItemBox = this.widget('ActionBox.DeleteTabItem');
     this.deleteTabItemBox.setTabBox(tabBox);
 
-    var addTabMenu = this.widget('AddTabMenu');
+    let addTabMenu = this.widget('AddTabMenu');
     addTabMenu.on('action', () => {
       this.addTabItemBox.addTabItem();
     });
 
-    var deleteMenu = this.widget('DeleteTabMenu');
+    let deleteMenu = this.widget('DeleteTabMenu');
     deleteMenu.on('action', () => {
       this.deleteTabItemBox.deleteTabItem(tabBox.selectedTab);
     });

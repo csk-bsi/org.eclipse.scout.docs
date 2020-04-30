@@ -57,7 +57,7 @@ export default class FormForm extends Form {
   }
 
   _onOpenFormButtonClick(model) {
-    var form = scout.create('jswidgets.FormForm', {
+    let form = scout.create('jswidgets.FormForm', {
       parent: this,
       title: this.propertiesBox.titleField.value,
       subTitle: this.propertiesBox.subTitleField.value,
@@ -79,7 +79,7 @@ export default class FormForm extends Form {
   }
 
   _onOpenLifecycleFormButtonClick(model) {
-    var form = scout.create('jswidgets.LifecycleForm', {
+    let form = scout.create('jswidgets.LifecycleForm', {
       parent: this,
       title: this.propertiesBox.titleField.value,
       subTitle: this.propertiesBox.subTitleField.value,
@@ -93,27 +93,27 @@ export default class FormForm extends Form {
     });
     this.widget('EventsTab').setField(form);
 
-    var lifecycleDataField = this.widget('LifecycleDataField');
+    let lifecycleDataField = this.widget('LifecycleDataField');
     form.on('load', event => {
-      var data = form.data;
-      var text = 'Form loaded (' + this.lifecycleDataToString(data) + ')';
+      let data = form.data;
+      let text = 'Form loaded (' + this.lifecycleDataToString(data) + ')';
       lifecycleDataField.setValue(text);
     });
     form.on('save', event => {
-      var data = form.data;
-      var text = lifecycleDataField.value;
+      let data = form.data;
+      let text = lifecycleDataField.value;
       text += '\n' + 'Form saved (' + this.lifecycleDataToString(data) + ')';
       lifecycleDataField.setValue(text);
     });
     form.on('reset', event => {
-      var data = form.data;
-      var text = lifecycleDataField.value;
+      let data = form.data;
+      let text = lifecycleDataField.value;
       text += '\n' + 'Form reset (' + this.lifecycleDataToString(data) + ')';
       lifecycleDataField.setValue(text);
     });
     form.on('close', event => {
-      var data = form.data;
-      var text = lifecycleDataField.value;
+      let data = form.data;
+      let text = lifecycleDataField.value;
       text += '\n' + 'Form closed (' + this.lifecycleDataToString(data) + ')';
       lifecycleDataField.setValue(text);
       this.lifecycleData = data;

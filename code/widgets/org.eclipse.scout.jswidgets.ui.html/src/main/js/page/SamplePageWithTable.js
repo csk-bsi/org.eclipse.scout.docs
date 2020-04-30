@@ -20,7 +20,7 @@ export default class SamplePageWithTable extends PageWithTable {
       }
       return strings.contains(element.string, searchFormStringFieldValue);
     };
-    var data = [{
+    let data = [{
       id: 1,
       string: 'string 1',
       smartValue: null,

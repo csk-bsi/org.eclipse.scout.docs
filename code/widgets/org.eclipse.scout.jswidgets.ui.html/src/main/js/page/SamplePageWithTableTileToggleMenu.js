@@ -10,7 +10,7 @@ export default class SamplePageWithTableTileToggleMenu extends Menu {
     super._init(model);
 
     this.on('action', () => {
-      var table = model.parent;
+      let table = model.parent;
       table.setTileMode(!table.tileMode);
     });
   }

@@ -24,7 +24,7 @@ export default class WorldLookupCall extends StaticLookupCall {
   }
 
   _queryAll(deferred) {
-    var lookupRows;
+    let lookupRows;
     if (this.loadIncremental) {
       // only select root nodes
       lookupRows = [];
@@ -45,7 +45,7 @@ export default class WorldLookupCall extends StaticLookupCall {
    * Creates a map that contains all data elements, for easier access by key (index 1)
    */
   _createDataMap() {
-    var dataMap = {};
+    let dataMap = {};
     this._data().forEach(data => {
       dataMap[data[0]] = data;
     });
@@ -53,7 +53,7 @@ export default class WorldLookupCall extends StaticLookupCall {
   }
 
   _dataToLookupRow(data) {
-    var lookupRow = super._dataToLookupRow(data);
+    let lookupRow = super._dataToLookupRow(data);
     if (lookupRow.parentKey) {
       lookupRow.iconId = icons.WORLD;
     } else {

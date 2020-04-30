@@ -28,10 +28,10 @@ export default class WidgetsRoute extends Route {
    * 1: objectType of the detail form of a node in FormFieldOutline
    */
   _createRoutes(desktop) {
-    var regex = /^jswidgets\.(\w*)(Form|PageWithTable|PageWithNodes)$/;
-    var routes = [];
+    let regex = /^jswidgets\.(\w*)(Form|PageWithTable|PageWithNodes)$/;
+    let routes = [];
     Tree.visitNodes(node => {
-      var routeRef = null,
+      let routeRef = null,
         objectType, result;
       if (node.detailForm) {
         objectType = node.detailForm.objectType;
@@ -70,8 +70,8 @@ export default class WidgetsRoute extends Route {
   activate(location) {
     super.activate(location);
 
-    var objectType = this._getRouteData(location)[1];
-    var foundNode = null;
+    let objectType = this._getRouteData(location)[1];
+    let foundNode = null;
     Tree.visitNodes(node => {
       if ((node.detailForm && node.detailForm.objectType === objectType) || node.objectType === objectType) {
         foundNode = node;
@@ -82,15 +82,15 @@ export default class WidgetsRoute extends Route {
   }
 
   _onPageChanged(event) {
-    var page = event.source.selectedNode();
+    let page = event.source.selectedNode();
     if (page) {
-      var objectType;
+      let objectType;
       if (page.detailForm) {
         objectType = page.detailForm.objectType;
       } else {
         objectType = page.objectType;
       }
-      var routeData = this._getRouteDataByObjectType(objectType);
+      let routeData = this._getRouteDataByObjectType(objectType);
       if (routeData) {
         router.updateLocation(routeData[0]);
       }

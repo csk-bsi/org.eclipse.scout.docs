@@ -27,7 +27,7 @@ export default class LifecycleForm extends Form {
 
     this.widget('HasCloseButtonField').on('propertyChange', this._onHasCloseButtonPropertyChange.bind(this));
 
-    var askIfNeedSaveField = this.widget('AskIfNeedSaveField');
+    let askIfNeedSaveField = this.widget('AskIfNeedSaveField');
     askIfNeedSaveField.setValue(this.askIfNeedSave);
     askIfNeedSaveField.on('propertyChange', this._onAskIfNeedSavePropertyChange.bind(this));
   }
