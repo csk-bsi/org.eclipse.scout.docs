@@ -18,10 +18,10 @@ export default class IconIdLookupCall extends StaticLookupCall {
 
   _data() {
     return Object.keys(scout.icons)
-      .filter(function(name) {
+      .filter(name => {
         var value = scout.icons[name];
         return typeof value === 'string' && strings.startsWith(value, 'font:');
-      }).map(function(name, i) {
+      }).map((name, i) => {
         var iconId = scout.icons[name];
         return [iconId, name];
       });

@@ -86,7 +86,7 @@ export default class HeatmapField extends FormField {
     }
     var heatPoints = [];
     if (this.heatPointList) {
-      this.heatPointList.forEach(function(point) {
+      this.heatPointList.forEach(point => {
         heatPoints.push([
           point.y,
           point.x,

@@ -35,9 +35,9 @@ export default class MenuBarForm extends Form {
     stackableField.on('propertyChange', this._onStackableFieldPropertyChange.bind(this));
 
     this.replaceMenu = this.widget('ReplaceMenu');
-    this.replaceMenu.on('action', function(event) {
+    this.replaceMenu.on('action', event => {
       this._onReplaceChildActionsClick(event, this.hierarchicalMenu);
-    }.bind(this));
+    });
 
     var menu1 = this.widget('Menu1');
     menu1.on('action', this._onMenuAction.bind(this));
@@ -51,12 +51,12 @@ export default class MenuBarForm extends Form {
     this.hierarchicalMenu = this.widget('HierarchicalMenu');
     this.hierarchicalMenu.on('action', this._onMenuAction.bind(this));
     this.hierarchicalMenu.on('propertyChange', this._onMenuPropertyChange.bind(this));
-    this.hierarchicalMenu.visitChildren(function(menu) {
+    this.hierarchicalMenu.visitChildren(menu => {
       if (menu instanceof Menu) {
         menu.on('action', this._onMenuAction.bind(this));
         menu.on('propertyChange', this._onMenuPropertyChange.bind(this));
       }
-    }.bind(this));
+    });
 
     this._fillSelectedMenuField();
     this._updateSelectedMenu();
@@ -123,13 +123,13 @@ export default class MenuBarForm extends Form {
     var selectedMenuItemField = this.widget('SelectedMenuField');
     var detailBox = this.widget('DetailBox');
     var menus = [];
-    detailBox.visitChildren(function(menu) {
+    detailBox.visitChildren(menu => {
       if (menu instanceof Menu && !(menu instanceof EllipsisMenu)) {
         menus.push(menu);
       }
     });
     selectedMenuItemField.lookupCall.data = [];
-    menus.forEach(function(menu) {
+    menus.forEach(menu => {
       selectedMenuItemField.lookupCall.data.push([menu.id, scout.nvl(menu.text, menu.id)]);
     });
   }

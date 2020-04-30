@@ -33,7 +33,7 @@ export default class ConfigurationBox extends TabBox {
 
   _onToggleMenuAction(event) {
     var expanded = !this.tabItems[0].expanded;
-    this.tabItems.forEach(function(tab) {
+    this.tabItems.forEach(tab => {
       tab.setExpanded(expanded);
     });
     var gridData = new GridData(this.gridDataHints);

@@ -94,30 +94,30 @@ export default class FormForm extends Form {
     this.widget('EventsTab').setField(form);
 
     var lifecycleDataField = this.widget('LifecycleDataField');
-    form.on('load', function(event) {
+    form.on('load', event => {
       var data = form.data;
       var text = 'Form loaded (' + this.lifecycleDataToString(data) + ')';
       lifecycleDataField.setValue(text);
-    }.bind(this));
-    form.on('save', function(event) {
+    });
+    form.on('save', event => {
       var data = form.data;
       var text = lifecycleDataField.value;
       text += '\n' + 'Form saved (' + this.lifecycleDataToString(data) + ')';
       lifecycleDataField.setValue(text);
-    }.bind(this));
-    form.on('reset', function(event) {
+    });
+    form.on('reset', event => {
       var data = form.data;
       var text = lifecycleDataField.value;
       text += '\n' + 'Form reset (' + this.lifecycleDataToString(data) + ')';
       lifecycleDataField.setValue(text);
-    }.bind(this));
-    form.on('close', function(event) {
+    });
+    form.on('close', event => {
       var data = form.data;
       var text = lifecycleDataField.value;
       text += '\n' + 'Form closed (' + this.lifecycleDataToString(data) + ')';
       lifecycleDataField.setValue(text);
       this.lifecycleData = data;
-    }.bind(this));
+    });
 
     lifecycleDataField.setVisible(true);
     form.open();

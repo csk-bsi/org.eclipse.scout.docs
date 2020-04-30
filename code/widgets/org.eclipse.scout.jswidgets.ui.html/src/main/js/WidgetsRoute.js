@@ -30,7 +30,7 @@ export default class WidgetsRoute extends Route {
   _createRoutes(desktop) {
     var regex = /^jswidgets\.(\w*)(Form|PageWithTable|PageWithNodes)$/;
     var routes = [];
-    Tree.visitNodes(function(node) {
+    Tree.visitNodes(node => {
       var routeRef = null,
         objectType, result;
       if (node.detailForm) {
@@ -56,13 +56,13 @@ export default class WidgetsRoute extends Route {
     if (strings.empty(location)) {
       return null;
     }
-    return arrays.find(this.routes, function(routeData) {
+    return arrays.find(this.routes, routeData => {
       return location.substring(1) === routeData[0];
     });
   }
 
   _getRouteDataByObjectType(objectType) {
-    return arrays.find(this.routes, function(routeData) {
+    return arrays.find(this.routes, routeData => {
       return routeData[1] === objectType;
     });
   }
@@ -72,7 +72,7 @@ export default class WidgetsRoute extends Route {
 
     var objectType = this._getRouteData(location)[1];
     var foundNode = null;
-    Tree.visitNodes(function(node) {
+    Tree.visitNodes(node => {
       if ((node.detailForm && node.detailForm.objectType === objectType) || node.objectType === objectType) {
         foundNode = node;
         return false;

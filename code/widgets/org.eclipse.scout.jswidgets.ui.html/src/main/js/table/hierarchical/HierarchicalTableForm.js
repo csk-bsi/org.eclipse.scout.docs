@@ -205,7 +205,7 @@ export default class HierarchicalTableForm extends Form {
   }
 
   _scrumbleOrder(rows) {
-    return rows.sort(function(a, b) {
+    return rows.sort((a, b) => {
       return 0.5 - Math.random();
     });
   }

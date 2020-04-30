@@ -42,10 +42,10 @@ export default class FileChooserForm extends Form {
     });
     this.widget('EventsTab').setField(fileChooser);
     fileChooser.open();
-    fileChooser.on('upload', function() {
+    fileChooser.on('upload', () => {
       this._updateChosenFiles(fileChooser.files);
       fileChooser.close();
-    }.bind(this));
+    });
   }
 
   _updateChosenFiles(files) {

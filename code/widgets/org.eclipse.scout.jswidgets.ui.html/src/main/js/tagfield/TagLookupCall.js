@@ -21,7 +21,7 @@ export default class TagLookupCall extends StaticLookupCall {
     tags.sort();
 
     var data = [];
-    tags.forEach(function(tag) {
+    tags.forEach(tag => {
       data.push([tag, tag]);
     });
     return data;

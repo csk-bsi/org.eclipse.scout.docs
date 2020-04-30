@@ -64,7 +64,7 @@ export default class EventsTab extends TabItem {
     var entry = '';
     var keys = Object.keys(event);
     keys.sort(this._createPropertySortFunc(['source', 'type', 'propertyName', 'oldValue', 'newValue']));
-    keys.forEach(function(key) {
+    keys.forEach(key => {
       if (key === 'preventDefault') {
         return;
       }

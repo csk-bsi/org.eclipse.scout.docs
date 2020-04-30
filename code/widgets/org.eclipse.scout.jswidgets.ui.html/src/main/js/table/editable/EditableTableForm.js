@@ -19,7 +19,7 @@ export default class EditableTableForm extends TableForm {
   _init(model) {
     super._init(model);
 
-    this.table.columns.forEach(function(column) {
+    this.table.columns.forEach(column => {
       if (column.id === 'IconColumn' || column.id === 'HtmlColumn') {
         return;
       }

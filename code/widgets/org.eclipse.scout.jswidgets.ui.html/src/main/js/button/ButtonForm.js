@@ -74,7 +74,7 @@ export default class ButtonForm extends Form {
       body: this.session.text('ButtonClickMessage')
     });
     msgBox.open();
-    msgBox.on('action', function() {
+    msgBox.on('action', () => {
       msgBox.close();
     });
   }

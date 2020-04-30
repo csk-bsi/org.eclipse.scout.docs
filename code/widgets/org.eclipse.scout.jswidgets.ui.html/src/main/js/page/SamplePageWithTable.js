@@ -56,7 +56,7 @@ export default class SamplePageWithTable extends PageWithTable {
 
   _transformTableDataToTableRows(tableData) {
     return tableData
-      .map(function(row) {
+      .map(row => {
         return {
           data: row,
           cells: [

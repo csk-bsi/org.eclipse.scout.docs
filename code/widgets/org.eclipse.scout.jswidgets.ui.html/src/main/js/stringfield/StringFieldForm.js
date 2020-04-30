@@ -180,7 +180,7 @@ export default class StringFieldForm extends Form {
       body: this.session.text('StringFieldHasActionMessage')
     });
     msgBox.open();
-    msgBox.on('action', function() {
+    msgBox.on('action', () => {
       msgBox.close();
     });
   }

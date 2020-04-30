@@ -30,11 +30,11 @@ export default class Desktop extends Desktop_1 {
     if (this.dense) {
       denseModeMenu.setIconId(icons.CHECKED_BOLD);
     }
-    this.on('propertyChange', function(event) {
+    this.on('propertyChange', event => {
       if (event.propertyName === 'dense') {
         this.dense ? denseModeMenu.setIconId(icons.CHECKED_BOLD) : denseModeMenu.setIconId(null);
       }
-    }.bind(this));
+    });
   }
 
   _onDefaultThemeMenuAction(event) {

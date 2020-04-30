@@ -236,7 +236,7 @@ export default class TileAccordionForm extends Form {
     if (filteredTiles.length === 0) {
       return;
     }
-    var selectedTileIndex = arrays.findIndex(filteredTiles, function(tile) {
+    var selectedTileIndex = arrays.findIndex(filteredTiles, tile => {
       return tile.selected;
     });
     this.accordion.selectTile(filteredTiles[selectedTileIndex + 1] || filteredTiles[0]);
@@ -302,7 +302,7 @@ export default class TileAccordionForm extends Form {
   }
 
   _updateGroupVisibility() {
-    this.accordion.groups.forEach(function(group) {
+    this.accordion.groups.forEach(group => {
       // Make groups invisible if a tile filter is active and no tiles match (= no tiles are visible)
       var groupEmpty = group.body.filters.length > 0 && group.body.filteredTiles.length === 0;
       group.setVisible(!groupEmpty);
@@ -312,7 +312,7 @@ export default class TileAccordionForm extends Form {
   _sortTiles(asc) {
     var comparator = comparators.ALPHANUMERIC;
     comparator.install(this.session);
-    this.accordion.setTileComparator(function(tile1, tile2) {
+    this.accordion.setTileComparator((tile1, tile2) => {
       var result = comparator.compare(tile1.label, tile2.label);
       if (!asc) {
         result = -result;

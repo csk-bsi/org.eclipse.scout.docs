@@ -110,7 +110,7 @@ export default class AccordionForm extends Form {
   }
 
   _onCollapseAllMenuAction(event) {
-    this.accordion.groups.forEach(function(group) {
+    this.accordion.groups.forEach(group => {
       group.setCollapsed(true);
     });
   }
@@ -169,7 +169,7 @@ export default class AccordionForm extends Form {
   _sortGroups(asc) {
     var comparator = comparators.ALPHANUMERIC;
     comparator.install(this.session);
-    this.accordion.setComparator(function(group1, group2) {
+    this.accordion.setComparator((group1, group2) => {
       var result = comparator.compare(group1.title, group2.title);
       if (!asc) {
         result = -result;

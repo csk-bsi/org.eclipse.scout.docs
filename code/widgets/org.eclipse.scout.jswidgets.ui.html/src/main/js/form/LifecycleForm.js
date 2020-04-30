@@ -49,7 +49,7 @@ export default class LifecycleForm extends Form {
       return super._save(data);
     }
     // Simulate a failing asynchronous save operation (e.g. an ajax call)
-    return $.resolvedPromise().then(function() {
+    return $.resolvedPromise().then(() => {
       throw new Error('Saving failed');
     });
   }

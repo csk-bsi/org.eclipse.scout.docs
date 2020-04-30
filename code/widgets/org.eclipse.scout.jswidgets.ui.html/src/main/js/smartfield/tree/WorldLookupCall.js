@@ -46,7 +46,7 @@ export default class WorldLookupCall extends StaticLookupCall {
    */
   _createDataMap() {
     var dataMap = {};
-    this._data().forEach(function(data) {
+    this._data().forEach(data => {
       dataMap[data[0]] = data;
     });
     return dataMap;

@@ -123,7 +123,7 @@ export default class TablePropertiesBox extends GroupBox {
 
   _onAutoOptimizeColumnWidthsPropertyChange(event) {
     if (event.propertyName === 'value') {
-      this.table.columns.forEach(function(column) {
+      this.table.columns.forEach(column => {
         column.setAutoOptimizeWidth(event.newValue);
       });
     }

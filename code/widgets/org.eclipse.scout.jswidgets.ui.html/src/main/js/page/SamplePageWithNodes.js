@@ -25,11 +25,11 @@ export default class SamplePageWithNodes extends PageWithNodes {
   computeTextForRow(row) {
     var table = row.getTable();
     var columnsByIndex = objects.createMap();
-    table.columns.forEach(function(column) {
+    table.columns.forEach(column => {
       columnsByIndex[column.index] = column;
     });
     // Search the first visible cell considering the originally defined column order (ignoring the column order changes the user did)
-    var firstDefinedVisibleCell = arrays.find(row.cells, function(cell, index) {
+    var firstDefinedVisibleCell = arrays.find(row.cells, (cell, index) => {
       var column = columnsByIndex[index];
       return column.visible && column.displayable;
     });

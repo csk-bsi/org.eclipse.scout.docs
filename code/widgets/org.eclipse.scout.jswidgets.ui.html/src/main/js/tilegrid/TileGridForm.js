@@ -152,7 +152,7 @@ export default class TileGridForm extends Form {
 
   _onColorSchemePropertyChange(event) {
     if (event.propertyName === 'value') {
-      this.tileGrid.tiles.forEach(function(tile) {
+      this.tileGrid.tiles.forEach(tile => {
         var scheme = $.extend({}, tile.colorScheme, {
           scheme: event.newValue
         });
@@ -163,7 +163,7 @@ export default class TileGridForm extends Form {
 
   _onInvertColorsPropertyChange(event) {
     if (event.propertyName === 'value') {
-      this.tileGrid.tiles.forEach(function(tile) {
+      this.tileGrid.tiles.forEach(tile => {
         var scheme = $.extend({}, tile.colorScheme, {
           inverted: event.newValue
         });
@@ -223,7 +223,7 @@ export default class TileGridForm extends Form {
   }
 
   _updateHasCustomTiles(event) {
-    this.tileGrid.toggleCssClass('has-custom-tiles', this.tileGrid.filteredTiles.some(function(tile) {
+    this.tileGrid.toggleCssClass('has-custom-tiles', this.tileGrid.filteredTiles.some(tile => {
       return tile instanceof CustomTile;
     }));
   }
@@ -239,7 +239,7 @@ export default class TileGridForm extends Form {
     if (this.tileGrid.filteredTiles.length === 0) {
       return;
     }
-    var selectedTileIndex = arrays.findIndex(this.tileGrid.filteredTiles, function(tile) {
+    var selectedTileIndex = arrays.findIndex(this.tileGrid.filteredTiles, tile => {
       return tile.selected;
     });
     this.tileGrid.selectTile(this.tileGrid.filteredTiles[selectedTileIndex + 1] || this.tileGrid.filteredTiles[0]);
@@ -279,7 +279,7 @@ export default class TileGridForm extends Form {
   _sortTiles(asc) {
     var comparator = comparators.ALPHANUMERIC;
     comparator.install(this.session);
-    this.tileGrid.setComparator(function(tile1, tile2) {
+    this.tileGrid.setComparator((tile1, tile2) => {
       var result = comparator.compare(tile1.label, tile2.label);
       if (!asc) {
         result = -result;

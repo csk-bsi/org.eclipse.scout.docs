@@ -37,19 +37,19 @@ export default class TabBoxForm extends Form {
     this.deleteTabItemBox.setTabBox(tabBox);
 
     var addTabMenu = this.widget('AddTabMenu');
-    addTabMenu.on('action', function() {
+    addTabMenu.on('action', () => {
       this.addTabItemBox.addTabItem();
-    }.bind(this));
+    });
 
     var deleteMenu = this.widget('DeleteTabMenu');
-    deleteMenu.on('action', function() {
+    deleteMenu.on('action', () => {
       this.deleteTabItemBox.deleteTabItem(tabBox.selectedTab);
-    }.bind(this));
+    });
 
-    this.widget('SettingsMenu').on('action', function() {
+    this.widget('SettingsMenu').on('action', () => {
       MessageBoxes.createOk(this)
         .withBody('This is a menu added to the Tab Box with horizontal alignment set to 1.')
         .buildAndOpen();
-    }.bind(this));
+    });
   }
 }
