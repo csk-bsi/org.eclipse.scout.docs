@@ -13,8 +13,8 @@ export default class SamplePageWithTable extends PageWithTable {
   }
 
   _loadTableData(searchFilter) {
-    var searchFormStringFieldValue = searchFilter.stringField;
-    var filter = function(element) {
+    let searchFormStringFieldValue = searchFilter.stringField;
+    let filter = element => {
       if (!strings.hasText(searchFormStringFieldValue)) {
         return true;
       }

@@ -84,7 +84,7 @@ export default class EventsTab extends TabItem {
   }
 
   _createPropertySortFunc(order) {
-    return function(a, b) {
+    return (a, b) => {
       var ia = order.indexOf(a);
       var ib = order.indexOf(b);
       if (ia > -1 && ib > -1) { // both are in the list

@@ -51,7 +51,7 @@ export default class DateFieldForm extends Form {
     autoDateField.on('propertyChange', this._onAutoDatePropertyChange.bind(this));
 
     var dontAllowCurrentDateField = this.widget('DontAllowCurrentDateField');
-    this._dontAllowCurrentDateValidator = function(value) {
+    this._dontAllowCurrentDateValidator = value => {
       if (dates.isSameDay(value, new Date())) {
         throw 'You are not allowed to select the current date';
       }

@@ -38,7 +38,7 @@ export default class RadioButtonGroupForm extends Form {
     gridColumnCountField.on('propertyChange', this._onGridColumnCountPropertyChange.bind(this));
 
     this.widget('ValueField').setEnabled(true);
-    this.widget('ValueFieldPropertiesBox').parseValue = function(newValue) {
+    this.widget('ValueFieldPropertiesBox').parseValue = newValue => {
       if (!isNaN(newValue)) {
         newValue = numbers.ensure(newValue);
       }
