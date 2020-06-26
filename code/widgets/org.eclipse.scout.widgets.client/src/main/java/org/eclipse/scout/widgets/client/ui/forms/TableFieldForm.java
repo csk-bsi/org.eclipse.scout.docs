@@ -1948,7 +1948,36 @@ public class TableFieldForm extends AbstractForm implements IPageForm {
           protected void execInitField() {
             setValue(getTableField().getTable().isCheckable());
           }
+        }
 
+        @Order(125)
+        @ClassId("60336300-0bb4-47bb-aad1-b325167445d0")
+        public class IsCompactField extends AbstractBooleanField {
+
+          @Override
+          protected String getConfiguredLabel() {
+            return "Compact";
+          }
+
+          @Override
+          protected boolean getConfiguredLabelVisible() {
+            return false;
+          }
+
+          @Override
+          protected String getConfiguredFont() {
+            return "ITALIC";
+          }
+
+          @Override
+          protected void execChangedValue() {
+            getTableField().getTable().setCompact(getValue());
+          }
+
+          @Override
+          protected void execInitField() {
+            setValue(getTableField().getTable().isCompact());
+          }
         }
 
         @Order(130)
