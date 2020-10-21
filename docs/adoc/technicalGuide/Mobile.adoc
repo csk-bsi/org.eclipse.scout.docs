@@ -53,7 +53,7 @@ By default all the main boxes will be responsive. In order to exclude a group bo
 
 [source,java,indent=0]
 ----
-include::{codedir}/org.eclipse.scout.docs.snippets/src/main/java/org/eclipse/scout/docs/snippets/ResponsiveSnippet.java[tags=UserAgentUtility]
+include::{codedir}/org.eclipse.scout.docs.snippets/src/main/java/org/eclipse/scout/docs/snippets/mobile/ResponsiveSnippet.java[tags=DisableResponsive]
 ----
 The handler is called when the manager detects a changed responsive state to perform its transformations.
 There are three responsive modes, of which only the first two are supported in scout classic.
@@ -67,43 +67,140 @@ There are three responsive modes, of which only the first two are supported in s
 image::{imgsdir}/responsive-form.png[]
 
 ===== Add a Custom Handler
+
 If a different widget is required to react to screen size changes, you can create your own handler by subclassing `scout.ResponsiveHandler` and registering it by calling `scout.responsiveManager.register(widget, handler)`. Each handler can define the thresholds when to switch from one responsive mode to another by implementing `scout.ResponsiveHandler.prototype.getCompactThreshold` or `scout.ResponsiveHandler.prototype.getCondensedThreshold`.
 
 === Device Transformation
+
 The second part of the mobile support is called device transformation. Transformation means the adaptation of model properties for different devices. Example: Setting the property labelPosition from 'left' to 'top' in order to move the label to the top.
 
-Such transformations are done on the UI server by so called device transformers. Currently 3 device transformers are available:
+Such transformations are done on the UI server by so called device transformers. Currently, 2 device transformers are available:
 
 * Mobile Device Transformer
 * Tablet Device Transformer
-* Touch Device Transformer
 
-Which transformer is active depends on the used user agent. The mobile transformer is active if the Scout app is used on a smart phone, the tablet one is active if it is used from a tablet, and the touch transformer is active in both cases. And may also be active if a desktop device supports touch.
-The order in which these transformers are processed is defined using the `@Order` annotation which is possible because they are regular Scout beans. This also means you can add your own transformer if you need custom transformations.
+Which transformer is active depends on the used user agent.
+The mobile transformer is active if the Scout app is used on a smart phone, the tablet one is active if it is used on a tablet.
+The order in which these transformers are processed is defined using the `@Order` annotation which is possible because they are regular Scout beans.
+This also means you can add your own transformer if you need custom transformations.
 
-The transformations are mainly limited to the adjustment of properties, although some properties have a bigger effect than others. The property `displayStyle` of the desktop for example controls the look of the desktop and setting it to `COMPACT` rearranges the desktop in a mobile friendly way.
+The transformations are mainly limited to the adjustment of properties, although some properties have a bigger effect than others.
+The property `displayStyle` of the desktop for example controls the look of the desktop and setting it to `COMPACT` rearranges the desktop in a mobile friendly way.
 
 [[img-mobile-desktop]]
 .Desktop with displayStyle set to 'compact'
 image::{imgsdir}/contacts_mobile.png[]
 
-All the transformations are triggered by extensions to components like form fields or the desktop. These extensions are registered by `DeviceTransformationPlatformListener`. If you don't want any of these transformers to be active you could simply replace this listener and do nothing.
+=== Disable Transformations
 
-=== Adapt specific Components
-The device transformers take care of global transformations which should be applied for most of the components. If you need to adapt a specific component you can do it at the component itself.
+Since the transformers are plain Scout beans, you can easily replace them and adjust their behavior.
+To disable some transformations just get the configuration and disable the unwanted ones.
+
+[source,java,indent=0]
+----
+include::{codedir}/org.eclipse.scout.docs.snippets/src/main/java/org/eclipse/scout/docs/snippets/mobile/CustomMobileDeviceTransformer.java[tags=ExcludeTransformationGlobally]
+----
+
+Have a look at the class `MobileDeviceTransformation` to get a list of all available transformations.
+
+All these transformations are triggered by extensions to components like form fields or the desktop.
+These extensions are registered by `DeviceTransformationPlatformListener`.
+If you don't want any of these transformers to be active you could simply replace that listener and do nothing.
+
+[source,java,indent=0]
+----
+include::{codedir}/org.eclipse.scout.docs.snippets/src/main/java/org/eclipse/scout/docs/snippets/mobile/CustomDeviceTransformationPlatformListener.java[tags=ExcludeAllTransformations]
+----
+
+=== Adapt Specific Components
+
+The device transformers take care of global transformations which should be applied for most of the components.
+If you need to adapt a specific component you can do it at the component itself.
 Let's say you want to hide a field if the application is running on a smart phone, you could do the following.
 
 [source,java,indent=0]
 ----
-include::{codedir}/org.eclipse.scout.docs.snippets/src/main/java/org/eclipse/scout/docs/snippets/MobileSnippet.java[tags=UserAgentUtility]
+include::{codedir}/org.eclipse.scout.docs.snippets/src/main/java/org/eclipse/scout/docs/snippets/mobile/AdjustComponents.java[tags=UserAgentUtility]
 ----
 
+Sometimes a transformation done by a device transformer is not desired but you don't want to turn it off globally.
+If that is the case you can disable that transformation for a specific form or form field.
+
+[source,java,indent=0]
+----
+include::{codedir}/org.eclipse.scout.docs.snippets/src/main/java/org/eclipse/scout/docs/snippets/mobile/AdjustComponents.java[tags=ExcludeTransformation]
+----
+
+Or you can exclude a specific form or form field from all transformations.
+
+[source,java,indent=0]
+----
+include::{codedir}/org.eclipse.scout.docs.snippets/src/main/java/org/eclipse/scout/docs/snippets/mobile/AdjustComponents.java[tags=ExcludeField]
+----
+
+=== Optimize the Look
+
+Once you have done your adjustments on the model and transformations and you are still
+not pleased how your app looks, you still have the possibility to add some custom CSS.
+To do so, just add a CSS class to your component and define the rules in a Less file.
+Also have a look at the Java file `CssClasses`. Scout provides a few predefined css classes for some specific use cases.
+
+[source,java,indent=0]
+----
+include::{codedir}/org.eclipse.scout.docs.snippets/src/main/java/org/eclipse/scout/docs/snippets/mobile/AdjustComponents.java[tags=CssClass]
+----
+
+For details please see the chapter Styling in the https://eclipsescout.github.io/{doc-short-version}/technical-guide-js.html#styling[Technical Guide for Scout JS].
+
+If you just want to reduce some padding maybe it is sufficient to adjust the gaps of a group box.
+To do so just override the method `getConfiguredBodyLayoutConfig` of your group box and do the adjustments.
+
+[source,java,indent=0]
+----
+include::{codedir}/org.eclipse.scout.docs.snippets/src/main/java/org/eclipse/scout/docs/snippets/mobile/AdjustComponents.java[tags=Gaps]
+----
+
+=== Compact Table
+
+Since Scout 11, the table got a new mode called `compact`.
+This will hide all columns and insert a new one containing the content of every other column.
+The content will be displayed vertically which means the cells of a row will be put below each other.
+
+image::{imgsdir}/table_compact.png[]
+
+This mode won't be set automatically by a device transformer because it does not work
+for editable tables and may not be desired for every table.
+But if you like the mode you can easily activate it by setting the property 'compact' to true.
+
+By default the table uses the visible columns in the order they are configured and creates a compact cell for each row.
+This is done by a so called `ITableCompactHandler`.
+If you don't like how the content is arranged you can control the conversion by adjusting the compact handler.
+
+[source,java,indent=0]
+----
+include::{codedir}/org.eclipse.scout.docs.snippets/src/main/java/org/eclipse/scout/docs/snippets/mobile/CompactTable.java[tags=CompactHandler]
+----
+
+With this mechanism you can easily reorder and hide columns, limit the initially visible content columns or hide the "more link".
+If this is not sufficient you can always set a custom `CompactBeanBuilder` or replace the compact handler completely by your own implementation.
+
+[source,java,indent=0]
+----
+include::{codedir}/org.eclipse.scout.docs.snippets/src/main/java/org/eclipse/scout/docs/snippets/mobile/CompactTable.java[tags=CustomBeanBuilder]
+----
+
+=== Compact Outline
+
 === User Agent
-The class `UserAgent` is essential for the mobile support. It stores information about the running device like the used browser or OS. The user agent is available on the UI server as well as on the backend server and can be accessed using the static method `UserAgent.get()`.
+
+The class `UserAgent` is essential for the mobile support.
+It stores information about the running device like the used browser or OS.
+The user agent is available on the UI server as well as on the backend server and can be accessed using the static method `UserAgent.get()`.
 
 The class `UserAgentUtility` provides some useful helper methods to check which type of device is running, like if it's a mobile phone, a tablet, or a desktop device.
 
 === Best Practices
+
 When creating a Scout application which should run on touch devices as well, the following tipps may help you.
 
 . Focus on the essential.
